@@ -3,26 +3,22 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 require(`dotenv`).config();
-// Middlewares
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Setup EJS view engine
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Database connection (ensure dbcon.js exports the connection object)
-// For example, if you're using the mysql module, it will use callbacks.
-const connection = require('./dbcon');
+ const connection = require('./dbcon');
 
-// Serve the static index.html
-app.get('/', (req, res) => {
+ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-// Route to store a thought in the database using callback-style
-app.post('/api/thoughts', (req, res) => {
+ app.post('/api/thoughts', (req, res) => {
     console.log(req.body.data);
 
     connection.execute(
@@ -101,8 +97,7 @@ app.post('/api/thoughts', (req, res) => {
     );
 });
 
-// Route to retrieve previous thoughts and display them using an EJS template (callback style)
-app.post('/api/prevthoughts', (req, res) => {
+ app.post('/api/prevthoughts', (req, res) => {
     const color = req.body.color;
     console.log('Color received is:', color);
 
@@ -132,8 +127,7 @@ app.post('/api/prevthoughts', (req, res) => {
                     `);
                 } else {
                     console.log(rows);
-                    // Render the EJS template with the retrieved rows
-                    res.render('prevthoughts', { rows });
+                     res.render('prevthoughts', { rows });
                 }
             }
         );
